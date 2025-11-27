@@ -4,6 +4,8 @@
 import React, { useState, useEffect } from 'react';
 import { ShoppingBag, Zap, Star } from 'lucide-react';
 import { GiAzulFlake } from "react-icons/gi";
+// import SmartStore from './ProductFetcher';
+
 // --- Interfaces (Product structure) ---
 interface Product {
     id: string; 
