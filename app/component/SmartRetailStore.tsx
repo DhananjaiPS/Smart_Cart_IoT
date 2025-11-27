@@ -13,8 +13,6 @@ import SmartStore from '../component/ProductFetcher'; // <<< FIX 1: Assume Smart
 import { RecommendationSection } from '../component/RecommendationSection'; // Using the mock/original section
 
 // --- Local Data & Mock API Logic ---
-// ... (fetchApiProducts function remains unchanged) ...
-
 const fetchApiProducts = async (setApiLoading: (b: boolean) => void, setApiProducts: (p: Product[]) => void) => {
     setApiLoading(true);
     
@@ -83,14 +81,10 @@ const SmartRetailStore: React.FC = () => {
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
     // Cart Management Hook - This holds the central state.
-    // Assuming useCartState() and Product type are correctly defined and typed in their respective files.
     const { cartItems, updateCartItem, updateQuantity } = useCartState(); 
     
     // TEMPORARY REFACTOR TO USE ORIGINAL STATE FOR WS HOOK COMPATIBILITY
     const [localCartItems, setLocalCartItems] = useState<Product[]>([]);
-    // Assuming useWebSocket expects updateCartItem (the central updater) and a local state setter.
-    // The previous TS error likely stemmed from an attempt to define a setter here without explicit typing, 
-    // but the final code provided already uses the state hook correctly.
     const { connectionStatus } = useWebSocket(updateCartItem, setLocalCartItems);
     
     // Sync cart state (placeholder)
@@ -123,7 +117,6 @@ const SmartRetailStore: React.FC = () => {
             name: item.name,
             price: item.price,
             quantity: item.quantity,
-            // Asserting type here to avoid TS error on missing properties if Product type is strict
             seller: (item as any).seller || null, 
             category: item.category,
         }));
@@ -193,7 +186,7 @@ const SmartRetailStore: React.FC = () => {
                             
                             {/* Store Metrics */}
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-12">
-                                {/* ... (Metrics content remains unchanged) ... */}
+                                {/* ... (Metrics content) ... */}
                                 <div className="bg-white rounded-xl p-4 shadow-md border-l-4 border-l-green-500">
                                     <div className="flex items-center">
                                         <Users className={`w-5 h-5 mr-2 ${getCrowdColor()}`} />
@@ -221,19 +214,18 @@ const SmartRetailStore: React.FC = () => {
                             </div>
 
                             {/* <<< FIX 2: Correct SmartStore Placement >>> */}
-                            {/* <div className="pt-4 border-t border-gray-200 mt-12">
+                            <div className="pt-4 border-t border-gray-200 mt-12">
                                 <h2 className="text-2xl sm:text-3xl font-bold mb-6 flex items-center">
                                     <Globe className='w-6 h-6 sm:w-8 sm:h-8 mr-3 text-cyan-500' />
                                     SmartStore: Infinite Product Catalog
                                 </h2>
                                 {/* Pass the central cart updater function */}
-                                {/* FIX: Ensure the imported SmartStore component is used and passed the required prop */}
                                 {/* <SmartStore updateParentCart={updateCartItem} />  */}
-                            {/* </div> */} 
+                            </div>
                             {/* <<< END FIX 2 >>> */}
 
 
-                            {/* API Products Section (unchanged) */}
+                            {/* API Products Section */}
                             <h2 className="text-2xl sm:text-3xl font-bold mb-4 flex items-center pt-4 border-t border-gray-200">
                                 <Zap className='w-6 h-6 sm:w-8 sm:h-8 mr-3 text-indigo-500 fill-indigo-500' />
                                 Today's Deals: Electronics
@@ -254,7 +246,7 @@ const SmartRetailStore: React.FC = () => {
                                 </div>
                             )}
                             
-                            {/* --- AI RECOMMENDATION SECTION (unchanged) --- */}
+                            {/* --- AI RECOMMENDATION SECTION --- */}
                             <RecommendationSection
                                 cartItems={cartItemsFinal}
                                 updateCartItem={updateCartItem}
@@ -262,7 +254,7 @@ const SmartRetailStore: React.FC = () => {
                             />
                             {/* --------------------------------- */}
 
-                            {/* Featured Products Section (unchanged) */}
+                            {/* Featured Products Section */}
                             <h2 className="text-2xl sm:text-3xl font-bold mb-4 flex items-center pt-4 border-t border-gray-200">
                                 <Star className='w-6 h-6 sm:w-8 sm:h-8 mr-3 text-amber-500 fill-amber-500' />
                                 Featured Products
@@ -280,7 +272,7 @@ const SmartRetailStore: React.FC = () => {
                             </div>
 
 
-                            {/* Static Online Products (unchanged) */}
+                            {/* Static Online Products */}
                             <h2 className="text-2xl sm:text-3xl font-bold mb-4 pt-4 border-t border-gray-200">Browse Online Products</h2>
                             <p className='mb-6 text-gray-600'>Add items using our website interface, or scan physical items with your RFID reader to see them appear on the right!</p>
 
@@ -296,7 +288,7 @@ const SmartRetailStore: React.FC = () => {
                             </div>
                         </div>
 
-                        {/* Shopping Cart (Right Side - unchanged logic) */}
+                        {/* Shopping Cart (Right Side) */}
                         <div className="lg:col-span-1 order-1 lg:order-2">
                             <div className="lg:sticky lg:top-24 bg-white rounded-2xl p-4 sm:p-6 shadow-2xl border border-blue-300 h-fit">
                                 <div className="flex items-center justify-between mb-4 sm:mb-6 border-b pb-2">
